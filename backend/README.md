@@ -74,9 +74,11 @@ Errors are returned as JSON objects in the following format:
 
 The API will return three error types when requests fail:
 
+```
 400: Bad Request
 404: Resource Not Found
 422: Not Processable
+```
 
 ## Endpoints
 
@@ -92,17 +94,20 @@ GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+```
     {'1' : "Science",
     '2' : "Art",
     '3' : "Geography",
     '4' : "History",
     '5' : "Entertainment",
     '6' : "Sports"}
+```
 
 GET '/questions'
 - Fetches the paginated list of questions with list of categories and number of questions in the database.
 - Request Arguments: page number (in the query String), considered as page 1 if not provided.
 - Returns: Paginated List of Questions (Max 10 at a time), List of categories (Dictionary of category Id and category Type), Total number of Questions and a Success Message
+```
     {
     "success": True,
     "questions": [
@@ -132,29 +137,35 @@ GET '/questions'
     },
     "current_category": null,
     }
+```
 
 DELETE '/questions/<int:question_id>'
 - Deletes a particular Question.
 - Request Arguments: Question Id of the question to be deleted.
 - Returns: Question Id of the question which was deleted with a success message.
+```
         {
             'success': True,
             'deleted': 1
         }
+```
 
 POST '/questions'
 - Takes the new question entered by User and store it in the Questions table to be included in Trivia Quiz.
 - Request Arguments: Fields should be passed in the request body in JSON format - Question, Answer, Category, and Difficulty
 - Returns: Question Id of the question which was added with a success message.
+```
         {
             'success': True,
             'created': 2
         }
+```
 
 POST '/questions/search'
 - Fetches the list of questions with the search string in the Question text.
 - Request Arguments: searchTerm should be passed in the request body
 - Returns: List of Questions, total number of questions, current Category with a success message.
+```
     {
         'success': True,
         'questions': [
@@ -176,11 +187,13 @@ POST '/questions/search'
         'total_questions': 2,
         'current_category': null
     }
+```
 
 GET '/categories/<int:category_id>/questions'
 - Fetches the list of questions for a particular category
 - Request Arguments: Category Id should be passed in the URI
 - Returns: List of Questions, total number of questions, current Category with a success message.
+```
     {
         'success': True,
         'questions': [
@@ -202,11 +215,13 @@ GET '/categories/<int:category_id>/questions'
         'total_questions': 2,
         'current_category': null
     }
+```
 
 POST '/quizzes'
 - Fetches a new question each time when called in the Quiz category.
 - Request Arguments: Quiz category and the list of previous questions should be passed in the request body.
 - Returns: A new Question with a success message.
+```
     {
           'success': True,
           'question':  {
@@ -217,6 +232,7 @@ POST '/quizzes'
             "id": 1,
             }
     }
+```
 
 ## Testing
 To run the tests, run
