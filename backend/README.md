@@ -81,7 +81,7 @@ The API will return three error types when requests fail:
 ```
 
 ## Endpoints
-
+```
 GET '/categories'
 GET '/questions'
 DELETE '/questions/<int:question_id>'
@@ -89,6 +89,7 @@ POST '/questions'
 POST '/questions/search'
 GET '/categories/<int:category_id>/questions'
 POST '/quizzes'
+```
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
