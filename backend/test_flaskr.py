@@ -14,11 +14,12 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "trivia"
-        self.username = "postgres"
-        self.password = "postgres"
-        self.database_path = "postgres://{}:{}@{}/{}".format(self.username, self.password,'localhost:5432', self.database_name)
-        setup_db(self.app, self.database_path)
+        self.DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')  
+        self.DB_USER = os.getenv('DB_USER', 'postgres')  
+        self.DB_PASSWORD = os.getenv('DB_PASSWORD', 'postgres')  
+        self.DB_NAME = os.getenv('DB_NAME', 'trivia')  
+        self.DB_PATH = 'postgresql://{}:{}@{}/{}'.format(self.DB_USER, self.DB_PASSWORD, self.DB_HOST, self.DB_NAME)
+        setup_db(self.app, self.DB_PATH)
 
         self.new_question = {
             'question': 'Test_New_Question',
@@ -115,12 +116,12 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().delete(f'/questions/{question_id}')
         data = json.loads(res.data)
 
-        question = Question.query.filter(Question.id == question_id).one_or_none()
+        del_question = Question.query.filter(Question.id == question_id).one_or_none()
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted'], question_id)
-        self.assertEqual(question, None)
+        self.assertEqual(del_question, None)
 
     def test_422_sent_delete_unprocessable_request(self):
         res = self.client().delete('/questions/999')

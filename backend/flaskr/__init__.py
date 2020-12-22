@@ -108,7 +108,7 @@ def create_app(test_config=None):
         description: Something went wrong!
     '''
     try:
-        question = Question.query.get(question_id)
+        question = Question.query.filter(Question.id == question_id).one_or_none()
         question.delete()
         return jsonify({
             'success': True,
@@ -203,23 +203,17 @@ def create_app(test_config=None):
     '''
     body = request.get_json()
     search_term = body.get('searchTerm', None)
-    match=0
     results=[]
-
-    questions=Question.query.all()
-    for question in questions:
-      if question.question.lower().find(search_term.lower()) != -1:
-        match=match+1
-        results.append(question)
+    results = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search_term)))
     formatted_results = [result.format() for result in results]
     
-    if (match == 0):
+    if (len(formatted_results) == 0):
       abort(404)    
 
     return jsonify({
         'success': True,
         'questions': formatted_results,
-        'total_questions': match,
+        'total_questions': len(formatted_results),
         'current_category': None
     })
 
